@@ -1,6 +1,6 @@
 [package]
 name = "hashit"
-version = "0.1.1"
+version = "0.1.2"
 edition = "2021"
 description = "Cross-platform local secret encryption app compatible with Hashit v1 payloads"
 license = "MIT"
