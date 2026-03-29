@@ -1,0 +1,22 @@
+[package]
+name = "hashit"
+version = "0.1.0"
+edition = "2021"
+description = "Cross-platform local secret encryption app compatible with Hashit v1 payloads"
+license = "MIT"
+
+[dependencies]
+aes-gcm = "0.10"
+base64 = "0.22"
+eframe = "0.33"
+pbkdf2 = "0.12"
+rand = "0.8"
+sha2 = "0.10"
+thiserror = "1.0"
+zeroize = "1.8"
+
+[profile.release]
+lto = true
+codegen-units = 1
+strip = true
+panic = "abort"
