@@ -1,24 +1,24 @@
 {
-  "name": "@efekurucay/hashit",
-  "version": "0.1.2",
-  "description": "Deterministic local secret encryption CLI backed by Rust",
+  "name": "@efekurucay/keyseed",
+  "version": "0.1.3",
+  "description": "Deterministic local secret encryption CLI with npm/npx distribution",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/efekurucay/hashit.git"
+    "url": "git+https://github.com/efekurucay/keyseed.git"
   },
-  "homepage": "https://github.com/efekurucay/hashit#readme",
+  "homepage": "https://github.com/efekurucay/keyseed#readme",
   "bugs": {
-    "url": "https://github.com/efekurucay/hashit/issues"
+    "url": "https://github.com/efekurucay/keyseed/issues"
   },
   "publishConfig": {
     "access": "public"
   },
   "bin": {
-    "hashit": "bin/hashit.js"
+    "keyseed": "bin/keyseed.js"
   },
   "files": [
-    "bin/hashit.js",
+    "bin/keyseed.js",
     "scripts",
     "src",
     "Cargo.toml",
@@ -30,7 +30,7 @@
     "postinstall": "node scripts/postinstall.js",
     "build": "cargo build --release",
     "test": "cargo test",
-    "cli": "node bin/hashit.js",
+    "cli": "node bin/keyseed.js",
     "pack:dry": "npm pack --dry-run"
   },
   "preferGlobal": true,

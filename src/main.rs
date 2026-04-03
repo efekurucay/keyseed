@@ -6,7 +6,7 @@ use std::process::ExitCode;
 
 #[derive(Parser)]
 #[command(
-    name = "hashit",
+    name = "keyseed",
     version,
     about = "Deterministic local secret encryption CLI"
 )]
@@ -19,7 +19,7 @@ struct Cli {
 enum Commands {
     /// Encrypt plain text deterministically with a master key
     Encrypt(CryptoArgs),
-    /// Decrypt a Hashit payload with a master key
+    /// Decrypt a payload with a master key
     Decrypt(CryptoArgs),
 }
 

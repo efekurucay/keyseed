@@ -2,6 +2,6 @@
 const { ensureBinary } = require('./common');
 
 ensureBinary((message) => console.log(message)).catch((error) => {
-  console.warn(`[hashit] ${error.message}`);
+  console.warn(`[keyseed] ${error.message}`);
   process.exit(0);
 });

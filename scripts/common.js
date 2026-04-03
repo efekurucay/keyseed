@@ -7,11 +7,19 @@ const { spawnSync } = require('node:child_process');
 
 const root = path.resolve(__dirname, '..');
 const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
-const binaryName = process.platform === 'win32' ? 'hashit.exe' : 'hashit';
+const binaryName = process.platform === 'win32' ? 'keyseed.exe' : 'keyseed';
 const localReleaseBinary = path.join(root, 'target', 'release', binaryName);
 const installedBinary = path.join(root, 'bin', 'native', binaryName);
 
 function cargoCommand() {
+  const homeCargo = process.platform === 'win32'
+    ? path.join(os.homedir(), '.cargo', 'bin', 'cargo.exe')
+    : path.join(os.homedir(), '.cargo', 'bin', 'cargo');
+
+  if (fs.existsSync(homeCargo)) {
+    return homeCargo;
+  }
+
   return process.platform === 'win32' ? 'cargo.exe' : 'cargo';
 }
 
@@ -50,7 +58,7 @@ function assetFileName() {
     return null;
   }
 
-  return `hashit-v${pkg.version}-${asset.suffix}.${asset.archive}`;
+  return `keyseed-v${pkg.version}-${asset.suffix}.${asset.archive}`;
 }
 
 function releaseUrl() {
@@ -59,7 +67,7 @@ function releaseUrl() {
     return null;
   }
 
-  return `https://github.com/efekurucay/hashit/releases/download/v${pkg.version}/${fileName}`;
+  return `https://github.com/efekurucay/keyseed/releases/download/v${pkg.version}/${fileName}`;
 }
 
 function ensureNativeDir() {
@@ -159,11 +167,11 @@ async function tryDownloadBinary(log = console.log) {
     return false;
   }
 
-  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'hashit-'));
+  const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'keyseed-'));
   const archivePath = path.join(tempDir, assetFileName());
 
   try {
-    log(`[hashit] Downloading prebuilt binary from ${url}`);
+    log(`[keyseed] Downloading prebuilt binary from ${url}`);
     await download(url, archivePath);
     extractArchive(archivePath, tempDir);
 
@@ -190,7 +198,7 @@ function cargoAvailable() {
 }
 
 function buildWithCargo(log = console.log) {
-  log('[hashit] Building Rust binary with cargo --release');
+  log('[keyseed] Building Rust binary with cargo --release');
   const build = run(cargoCommand(), ['build', '--release']);
 
   if (build.error) {
@@ -232,7 +240,7 @@ async function ensureBinary(log = console.log) {
       return installedBinary;
     }
   } catch (error) {
-    log(`[hashit] Prebuilt download failed: ${error.message}`);
+    log(`[keyseed] Prebuilt download failed: ${error.message}`);
   }
 
   if (!cargoAvailable()) {

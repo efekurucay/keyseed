@@ -1,6 +1,6 @@
 [package]
-name = "hashit"
-version = "0.1.2"
+name = "keyseed"
+version = "0.1.3"
 edition = "2021"
 description = "Simple CLI for deterministic local secret encryption"
 license = "MIT"

@@ -19,6 +19,6 @@ async function main() {
 }
 
 main().catch((error) => {
-  console.error(`[hashit] ${error.message}`);
+  console.error(`[keyseed] ${error.message}`);
   process.exit(1);
 });

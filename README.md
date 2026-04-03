@@ -1,111 +1,81 @@
-# Hashit
+# Keyseed
 
-A small local-first CLI for deterministic secret encryption with one master key.
+<p align="center">
+  <strong>Tiny deterministic secret encryption CLI.</strong>
+</p>
 
-Published shape: an npm/npx command backed by a Rust binary.
+<p align="center">
+  <img src="https://img.shields.io/npm/v/%40efekurucay%2Fkeyseed" alt="npm version">
+  <img src="https://img.shields.io/github/actions/workflow/status/efekurucay/keyseed/ci.yml?branch=main&label=ci" alt="CI">
+  <img src="https://img.shields.io/github/actions/workflow/status/efekurucay/keyseed/release.yml?label=release" alt="Release">
+  <img src="https://img.shields.io/github/license/efekurucay/keyseed" alt="License">
+</p>
 
-## What it does
+Keyseed is a small local-first CLI for generating deterministic encrypted payloads from a text input and a master key.
 
-Given the same:
-- input text, for example `efe.facebook`
-- master key
+If the input and master key stay the same, the output stays the same.
 
-Hashit produces the same encrypted output every time.
+## Install
 
-You can later decrypt that payload with the same master key.
+### npx
 
-## Why this shape?
+```bash
+npx @efekurucay/keyseed encrypt "efe.facebook" -k "master-key"
+```
 
-This repo is now intentionally a **clean CLI project**:
-- core crypto logic stays in Rust
-- npm/npx is used as the convenient entrypoint
-- the `hashit` command is easy to run globally or through `npx`
+### global install
 
-## Install and run
+```bash
+npm install -g @efekurucay/keyseed
+keyseed encrypt "efe.facebook" -k "master-key"
+```
 
-### Option 1: run from the repo
+### local development
 
 ```bash
 npm install
-npm run cli -- encrypt "efe.facebook" -k "my-master-key"
+npx . encrypt "efe.facebook" -k "master-key"
 ```
 
-### Option 2: global install
-
-```bash
-npm install -g @efekurucay/hashit
-hashit encrypt "efe.facebook" -k "my-master-key"
-```
-
-### Option 3: npx
-
-```bash
-npx @efekurucay/hashit encrypt "efe.facebook" -k "my-master-key"
-```
-
-### Option 4: local package during development
-
-```bash
-npm install -g .
-hashit encrypt "efe.facebook" -k "my-master-key"
-```
-
-## Commands
+## Usage
 
 ### Encrypt
 
 ```bash
-hashit encrypt "efe.facebook" --master-key "my-master-key"
-```
-
-Short form:
-
-```bash
-hashit encrypt "efe.facebook" -k "my-master-key"
+keyseed encrypt "efe.facebook" -k "master-key"
 ```
 
 ### Decrypt
 
 ```bash
-hashit decrypt "hashit:v2:..." --master-key "my-master-key"
+keyseed decrypt "hashit:v2:..." -k "master-key"
 ```
 
-### Environment variable
-
-You can also provide the master key with `HASHIT_MASTER_KEY`:
+### Use environment variable
 
 ```bash
-export HASHIT_MASTER_KEY="my-master-key"
-hashit encrypt "efe.facebook"
+export HASHIT_MASTER_KEY="master-key"
+keyseed encrypt "efe.facebook"
 ```
 
-## Crypto
+## Behavior
 
-- Key derivation: `PBKDF2-HMAC-SHA256`
-- Iterations: `210,000`
-- Default format: `hashit:v2:<base64>`
-- Default encryption: `AES-256-GCM-SIV`
-- Legacy decryption support: `AES-256-GCM` for `hashit:v1`
+- same input + same master key => same output
+- output format is `hashit:v2:...`
+- old `hashit:v1:...` payloads still decrypt
+- works as an npm/npx command backed by a Rust binary
 
 ## Development
 
 ```bash
 cargo test
-cargo build --release
+npm run cli -- encrypt "efe.facebook" -k "master-key"
 ```
 
-## Packaging
+## Release notes
 
-```bash
-chmod +x build.sh
-./build.sh
-```
-
-## Notes
-
-- The npm wrapper first tries to download a matching prebuilt binary from GitHub Releases.
-- If no prebuilt binary is available, it falls back to building with Cargo.
-- Supported prebuilt targets in this repo: Linux x64, Windows x64, macOS Apple Silicon, macOS Intel.
+The npm wrapper tries to download a matching prebuilt binary from GitHub Releases.
+If no prebuilt binary exists for the platform, it falls back to building with Cargo.
 
 ## License
 

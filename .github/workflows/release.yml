@@ -61,11 +61,11 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p dist
-          PACKAGE_DIR="dist/hashit-${VERSION}-${{ matrix.name }}"
+          PACKAGE_DIR="dist/keyseed-${VERSION}-${{ matrix.name }}"
           mkdir -p "$PACKAGE_DIR"
-          cp "target/${{ matrix.target }}/release/hashit" "$PACKAGE_DIR/hashit"
+          cp "target/${{ matrix.target }}/release/keyseed" "$PACKAGE_DIR/keyseed"
           cp README.md LICENSE "$PACKAGE_DIR/"
-          tar -czf "dist/hashit-${VERSION}-${{ matrix.name }}.tar.gz" -C dist "hashit-${VERSION}-${{ matrix.name }}"
+          tar -czf "dist/keyseed-${VERSION}-${{ matrix.name }}.tar.gz" -C dist "keyseed-${VERSION}-${{ matrix.name }}"
 
       - name: Package macOS release
         if: runner.os == 'macOS'
@@ -73,29 +73,29 @@ jobs:
         run: |
           set -euo pipefail
           mkdir -p dist
-          PACKAGE_DIR="dist/hashit-${VERSION}-${{ matrix.name }}"
+          PACKAGE_DIR="dist/keyseed-${VERSION}-${{ matrix.name }}"
           mkdir -p "$PACKAGE_DIR"
-          cp "target/${{ matrix.target }}/release/hashit" "$PACKAGE_DIR/hashit"
+          cp "target/${{ matrix.target }}/release/keyseed" "$PACKAGE_DIR/keyseed"
           cp README.md LICENSE "$PACKAGE_DIR/"
-          tar -czf "dist/hashit-${VERSION}-${{ matrix.name }}.tar.gz" -C dist "hashit-${VERSION}-${{ matrix.name }}"
+          tar -czf "dist/keyseed-${VERSION}-${{ matrix.name }}.tar.gz" -C dist "keyseed-${VERSION}-${{ matrix.name }}"
 
       - name: Package Windows release
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path dist | Out-Null
-          $packageDir = "dist/hashit-$env:VERSION-${{ matrix.name }}"
+          $packageDir = "dist/keyseed-$env:VERSION-${{ matrix.name }}"
           New-Item -ItemType Directory -Force -Path $packageDir | Out-Null
-          Copy-Item "target/${{ matrix.target }}/release/hashit.exe" "$packageDir/hashit.exe"
+          Copy-Item "target/${{ matrix.target }}/release/keyseed.exe" "$packageDir/keyseed.exe"
           Copy-Item README.md "$packageDir/README.md"
           Copy-Item LICENSE "$packageDir/LICENSE"
-          Compress-Archive -Path $packageDir -DestinationPath "dist/hashit-$env:VERSION-${{ matrix.name }}.zip" -Force
+          Compress-Archive -Path $packageDir -DestinationPath "dist/keyseed-$env:VERSION-${{ matrix.name }}.zip" -Force
 
       - name: Upload packaged artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.name }}
-          path: dist/hashit-${{ env.VERSION }}-${{ matrix.name }}.${{ matrix.archive }}
+          path: dist/keyseed-${{ env.VERSION }}-${{ matrix.name }}.${{ matrix.archive }}
 
   release:
     name: Publish GitHub Release
