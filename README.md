@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/npm/v/%40efekurucay%2Fkeyseed" alt="npm version">
+  <img src="https://img.shields.io/npm/v/keyseed" alt="npm version">
   <img src="https://img.shields.io/github/actions/workflow/status/efekurucay/keyseed/ci.yml?branch=main&label=ci" alt="CI">
   <img src="https://img.shields.io/github/actions/workflow/status/efekurucay/keyseed/release.yml?label=release" alt="Release">
   <img src="https://img.shields.io/github/license/efekurucay/keyseed" alt="License">
@@ -20,13 +20,13 @@ If the input and master key stay the same, the output stays the same.
 ### npx
 
 ```bash
-npx @efekurucay/keyseed encrypt "efe.facebook" -k "master-key"
+npx keyseed encrypt "efe.facebook" -k "master-key"
 ```
 
 ### global install
 
 ```bash
-npm install -g @efekurucay/keyseed
+npm install -g keyseed
 keyseed encrypt "efe.facebook" -k "master-key"
 ```
 
@@ -41,10 +41,10 @@ npx . encrypt "efe.facebook" -k "master-key"
 
 ```bash
 # encrypt
-npx @efekurucay/keyseed encrypt "efe.facebook" -k "master-key"
+npx keyseed encrypt "efe.facebook" -k "master-key"
 
 # decrypt
-npx @efekurucay/keyseed decrypt "hashit:v2:..." -k "master-key"
+npx keyseed decrypt "hashit:v2:..." -k "master-key"
 
 # use env var
 export HASHIT_MASTER_KEY="master-key"

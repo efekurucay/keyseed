@@ -1,6 +1,6 @@
 {
-  "name": "@efekurucay/keyseed",
-  "version": "0.1.4",
+  "name": "keyseed",
+  "version": "0.1.5",
   "description": "Deterministic local secret encryption CLI with npm/npx distribution",
   "license": "MIT",
   "repository": {
