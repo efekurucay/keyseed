@@ -37,6 +37,20 @@ npm install
 npx . encrypt "efe.facebook" -k "master-key"
 ```
 
+## Quick cheatsheet
+
+```bash
+# encrypt
+npx @efekurucay/keyseed encrypt "efe.facebook" -k "master-key"
+
+# decrypt
+npx @efekurucay/keyseed decrypt "hashit:v2:..." -k "master-key"
+
+# use env var
+export HASHIT_MASTER_KEY="master-key"
+keyseed encrypt "efe.instagram"
+```
+
 ## Usage
 
 ### Encrypt
