@@ -11,17 +11,17 @@ use eframe::{
     App, NativeOptions,
 };
 
-const MAX_CONTENT_WIDTH: f32 = 840.0;
-const COMPACT_BREAKPOINT: f32 = 720.0;
-const REGULAR_EDITOR_HEIGHT: f32 = 220.0;
-const COMPACT_EDITOR_HEIGHT: f32 = 150.0;
+const MAX_CONTENT_WIDTH: f32 = 820.0;
+const COMPACT_BREAKPOINT: f32 = 700.0;
+const REGULAR_EDITOR_HEIGHT: f32 = 150.0;
+const COMPACT_EDITOR_HEIGHT: f32 = 112.0;
 
 fn main() -> eframe::Result<()> {
     let native_options = NativeOptions {
         viewport: egui::ViewportBuilder::default()
             .with_title("Hashit")
-            .with_inner_size([860.0, 640.0])
-            .with_min_inner_size([420.0, 480.0]),
+            .with_inner_size([820.0, 540.0])
+            .with_min_inner_size([420.0, 460.0]),
         ..Default::default()
     };
 
@@ -65,7 +65,7 @@ impl App for HashitApp {
             .frame(
                 Frame::new()
                     .fill(Color32::from_rgb(242, 244, 248))
-                    .inner_margin(Margin::same(18)),
+                    .inner_margin(Margin::same(10)),
             )
             .show(ctx, |ui| {
                 ScrollArea::vertical()
@@ -103,42 +103,26 @@ impl App for HashitApp {
 impl HashitApp {
     fn header(&self, ui: &mut egui::Ui) {
         hero_frame().show(ui, |ui| {
-            ui.vertical(|ui| {
-                ui.horizontal(|ui| {
-                    traffic_lights(ui);
-                    ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                        soft_chip(
-                            ui,
-                            "Local-only",
-                            Color32::from_rgb(247, 248, 251),
-                            Color32::from_rgb(86, 96, 112),
-                            Color32::from_rgb(222, 226, 234),
-                        );
-                    });
-                });
-
-                ui.add_space(14.0);
+            ui.horizontal(|ui| {
+                traffic_lights(ui);
+                ui.add_space(8.0);
                 ui.label(
                     RichText::new("Hashit")
-                        .size(30.0)
+                        .size(15.0)
                         .strong()
                         .color(Color32::from_rgb(24, 28, 37)),
                 );
-                ui.add_space(6.0);
+                ui.add_space(8.0);
                 ui.label(
-                    RichText::new(
-                        "Deterministic local encryption in a cleaner, calmer desktop surface.",
-                    )
-                    .size(13.5)
-                    .color(Color32::from_rgb(96, 103, 118)),
+                    RichText::new("Deterministic local encryption")
+                        .size(10.5)
+                        .color(Color32::from_rgb(104, 111, 124)),
                 );
-                ui.add_space(14.0);
 
-                ui.horizontal_wrapped(|ui| {
-                    feature_pill(ui, "AES-256-GCM-SIV");
-                    feature_pill(ui, "PBKDF2-SHA256");
+                ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
                     feature_pill(ui, "hashit:v2");
-                    feature_pill(ui, "Same input = same output");
+                    feature_pill(ui, "PBKDF2-SHA256");
+                    feature_pill(ui, "AES-256-GCM-SIV");
                 });
             });
         });
@@ -150,16 +134,16 @@ impl HashitApp {
                 ui.vertical(|ui| {
                     ui.label(
                         RichText::new("Master key")
-                            .size(15.0)
+                            .size(13.5)
                             .strong()
                             .color(Color32::from_rgb(28, 32, 41)),
                     );
-                    ui.add_space(4.0);
+                    ui.add_space(3.0);
                     ui.label(
                         RichText::new(
                             "Used only for the current session. Nothing is saved to disk.",
                         )
-                        .size(11.5)
+                        .size(10.5)
                         .color(Color32::from_rgb(108, 115, 128)),
                     );
                 });
@@ -192,7 +176,7 @@ impl HashitApp {
                         "Show master key"
                     };
                     if ui
-                        .add(secondary_button(toggle_label).min_size(Vec2::new(ui.available_width(), 34.0)))
+                        .add(secondary_button(toggle_label).min_size(Vec2::new(ui.available_width(), 30.0)))
                         .clicked()
                     {
                         self.show_master_key = !self.show_master_key;
@@ -209,7 +193,7 @@ impl HashitApp {
 
                     let toggle_label = if self.show_master_key { "Hide" } else { "Show" };
                     if ui
-                        .add(secondary_button(toggle_label).min_size(Vec2::new(88.0, 34.0)))
+                        .add(secondary_button(toggle_label).min_size(Vec2::new(78.0, 30.0)))
                         .clicked()
                     {
                         self.show_master_key = !self.show_master_key;
@@ -217,10 +201,13 @@ impl HashitApp {
                 });
             }
 
-            ui.add_space(10.0);
-            muted_note(
-                ui,
-                "Tip: use one long, memorable passphrase and keep platform labels consistent, like efe.facebook or efe.instagram.",
+            ui.add_space(6.0);
+            ui.label(
+                RichText::new(
+                    "Tip: keep labels stable, like efe.facebook or efe.instagram.",
+                )
+                .size(9.8)
+                .color(Color32::from_rgb(112, 118, 130)),
             );
         });
     }
@@ -307,16 +294,16 @@ impl HashitApp {
                 ui.vertical(|ui| {
                     ui.label(
                         RichText::new("Actions")
-                            .size(15.0)
+                            .size(13.5)
                             .strong()
                             .color(Color32::from_rgb(28, 32, 41)),
                     );
-                    ui.add_space(4.0);
+                    ui.add_space(3.0);
                     ui.label(
                         RichText::new(
                             "Encrypt to generate the deterministic payload. Decrypt to restore the original label or secret.",
                         )
-                        .size(11.5)
+                        .size(10.5)
                         .color(Color32::from_rgb(108, 115, 128)),
                     );
                 });
@@ -386,8 +373,8 @@ impl HashitApp {
         Frame::new()
             .fill(bg)
             .stroke(Stroke::new(1.0, border))
-            .corner_radius(CornerRadius::same(20))
-            .inner_margin(Margin::symmetric(14, 10))
+            .corner_radius(CornerRadius::same(16))
+            .inner_margin(Margin::symmetric(12, 8))
             .show(ui, |ui| {
                 ui.horizontal_wrapped(|ui| {
                     ui.label(RichText::new(label).strong().color(fg));
@@ -457,12 +444,12 @@ enum PanelTone {
 }
 
 fn configure_theme(ctx: &egui::Context) {
-    ctx.set_zoom_factor(0.93);
+    ctx.set_zoom_factor(0.86);
 
     let mut style = (*ctx.style()).clone();
-    style.spacing.item_spacing = Vec2::new(12.0, 12.0);
-    style.spacing.button_padding = Vec2::new(14.0, 10.0);
-    style.spacing.text_edit_width = 220.0;
+    style.spacing.item_spacing = Vec2::new(8.0, 8.0);
+    style.spacing.button_padding = Vec2::new(10.0, 6.0);
+    style.spacing.text_edit_width = 180.0;
     style.visuals = egui::Visuals::light();
     style.visuals.override_text_color = Some(Color32::from_rgb(29, 33, 42));
     style.visuals.window_corner_radius = CornerRadius::same(24);
@@ -646,21 +633,6 @@ fn soft_chip(
         });
 }
 
-fn muted_note(ui: &mut egui::Ui, text: &str) {
-    Frame::new()
-        .fill(Color32::from_rgb(247, 248, 251))
-        .stroke(Stroke::new(1.0, Color32::from_rgb(232, 235, 241)))
-        .corner_radius(CornerRadius::same(14))
-        .inner_margin(Margin::symmetric(12, 10))
-        .show(ui, |ui| {
-            ui.label(
-                RichText::new(text)
-                    .size(10.8)
-                    .color(Color32::from_rgb(104, 111, 124)),
-            );
-        });
-}
-
 fn traffic_lights(ui: &mut egui::Ui) {
     ui.horizontal(|ui| {
         ui.label(RichText::new("●").size(12.0).color(Color32::from_rgb(255, 95, 86)));
@@ -673,14 +645,14 @@ fn hero_frame() -> Frame {
     Frame::new()
         .fill(Color32::from_rgb(252, 252, 253))
         .stroke(Stroke::new(1.0, Color32::from_rgb(225, 229, 236)))
-        .corner_radius(CornerRadius::same(28))
-        .inner_margin(Margin::same(20))
+        .corner_radius(CornerRadius::same(16))
+        .inner_margin(Margin::symmetric(12, 8))
 }
 
 fn section_frame() -> Frame {
     Frame::new()
         .fill(Color32::from_rgb(252, 252, 253))
         .stroke(Stroke::new(1.0, Color32::from_rgb(228, 231, 237)))
-        .corner_radius(CornerRadius::same(24))
-        .inner_margin(Margin::same(18))
+        .corner_radius(CornerRadius::same(16))
+        .inner_margin(Margin::same(12))
 }
