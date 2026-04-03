@@ -55,4 +55,4 @@ jobs:
         uses: Swatinem/rust-cache@v2
 
       - name: Run tests
-        run: cargo test --locked --target ${{ matrix.target }}
+        run: cargo test --target ${{ matrix.target }}

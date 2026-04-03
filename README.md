@@ -10,7 +10,7 @@
   <img src="https://img.shields.io/badge/Rust-1.74%2B-000000?logo=rust" alt="Rust">
   <img src="https://img.shields.io/badge/UI-egui-2563eb" alt="egui">
   <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-0f766e" alt="Platforms">
-  <img src="https://img.shields.io/badge/crypto-AES--256--GCM%20%2B%20PBKDF2-7c3aed" alt="Crypto">
+  <img src="https://img.shields.io/badge/crypto-AES--256--GCM%20%2F%20AES--256--GCM--SIV%20%2B%20PBKDF2-7c3aed" alt="Crypto">
   <img src="https://img.shields.io/badge/license-MIT-16a34a" alt="License">
 </p>
 
@@ -23,7 +23,7 @@ You remember **one master key**. Hashit uses it to encrypt or decrypt passwords,
 - **Simple UI** — paste text, enter your master key, encrypt or decrypt
 - **Cross-platform** — built in Rust and designed for macOS, Linux, and Windows
 - **Portable output** — encrypted text is stored as a plain string you can save anywhere
-- **Backward compatible** — supports the existing `hashit:v1:<base64>` payload format
+- **Backward compatible** — decrypts existing `hashit:v1:<base64>` payloads and writes deterministic `hashit:v2:<base64>` payloads by default
 
 ## Features
 
@@ -39,17 +39,23 @@ Hashit is intentionally small and focused.
 
 - Key derivation: **PBKDF2-HMAC-SHA256**
 - Iterations: **210,000**
-- Encryption: **AES-256-GCM**
-- Random salt: **16 bytes**
-- Random nonce: **12 bytes**
-- Payload format: **`hashit:v1:<base64>`**
+- Default encryption: **AES-256-GCM-SIV** with deterministic output
+- Legacy decryption support: **AES-256-GCM** for existing v1 payloads
+- Legacy v1 random salt: **16 bytes**
+- Legacy v1 random nonce: **12 bytes**
+- Payload formats: **`hashit:v1:<base64>`** and **`hashit:v2:<base64>`**
 
 Payload layout:
 
-- `1 byte` version
-- `16 bytes` salt
-- `12 bytes` nonce
-- `ciphertext + 16 bytes authentication tag`
+- **v2 (default)**
+  - `1 byte` version
+  - `ciphertext + 16 bytes authentication tag`
+  - deterministic: the same input + the same master key produce the same output
+- **v1 (legacy)**
+  - `1 byte` version
+  - `16 bytes` salt
+  - `12 bytes` nonce
+  - `ciphertext + 16 bytes authentication tag`
 
 ## Running locally
 

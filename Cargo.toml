@@ -2,11 +2,12 @@
 name = "hashit"
 version = "0.1.2"
 edition = "2021"
-description = "Cross-platform local secret encryption app compatible with Hashit v1 payloads"
+description = "Cross-platform local secret encryption app with deterministic Hashit v2 output and v1 compatibility"
 license = "MIT"
 
 [dependencies]
 aes-gcm = "0.10"
+aes-gcm-siv = "0.11"
 base64 = "0.22"
 eframe = "0.33"
 pbkdf2 = "0.12"

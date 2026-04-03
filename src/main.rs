@@ -123,7 +123,7 @@ impl HashitApp {
                     info_chip(ui, "Local only");
                     info_chip(ui, "AES-256-GCM");
                     info_chip(ui, "PBKDF2-SHA256");
-                    info_chip(ui, "hashit:v1");
+                    info_chip(ui, "hashit:v2");
                 });
             });
         });
