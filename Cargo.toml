@@ -2,14 +2,14 @@
 name = "hashit"
 version = "0.1.2"
 edition = "2021"
-description = "Cross-platform local secret encryption app with deterministic output"
+description = "Simple CLI for deterministic local secret encryption"
 license = "MIT"
 
 [dependencies]
 aes-gcm = "0.10"
 aes-gcm-siv = "0.11"
 base64 = "0.22"
-eframe = "0.33"
+clap = { version = "4.5", features = ["derive", "env"] }
 pbkdf2 = "0.12"
 rand = "0.8"
 sha2 = "0.10"

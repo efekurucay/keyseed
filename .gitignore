@@ -1,3 +1,6 @@
 target/
 dist/
+node_modules/
+bin/native/
+package-lock.json
 .DS_Store

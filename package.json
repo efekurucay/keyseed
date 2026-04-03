@@ -1,0 +1,47 @@
+{
+  "name": "@efekurucay/hashit",
+  "version": "0.1.2",
+  "description": "Deterministic local secret encryption CLI backed by Rust",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/efekurucay/hashit.git"
+  },
+  "homepage": "https://github.com/efekurucay/hashit#readme",
+  "bugs": {
+    "url": "https://github.com/efekurucay/hashit/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "bin": {
+    "hashit": "bin/hashit.js"
+  },
+  "files": [
+    "bin/hashit.js",
+    "scripts",
+    "src",
+    "Cargo.toml",
+    "Cargo.lock",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "postinstall": "node scripts/postinstall.js",
+    "build": "cargo build --release",
+    "test": "cargo test",
+    "cli": "node bin/hashit.js",
+    "pack:dry": "npm pack --dry-run"
+  },
+  "preferGlobal": true,
+  "engines": {
+    "node": ">=18"
+  },
+  "keywords": [
+    "cli",
+    "rust",
+    "encryption",
+    "deterministic",
+    "security"
+  ]
+}

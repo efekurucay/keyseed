@@ -1,137 +1,111 @@
 # Hashit
 
-<p align="center">
-  <strong>A clean, cross-platform desktop app for encrypting secrets locally with one master key.</strong>
-</p>
+A small local-first CLI for deterministic secret encryption with one master key.
 
-<p align="center">
-  <img src="https://img.shields.io/github/actions/workflow/status/efekurucay/hashit/ci.yml?branch=main&label=ci" alt="CI">
-  <img src="https://img.shields.io/github/actions/workflow/status/efekurucay/hashit/release.yml?label=release" alt="Release">
-  <img src="https://img.shields.io/badge/Rust-1.74%2B-000000?logo=rust" alt="Rust">
-  <img src="https://img.shields.io/badge/UI-egui-2563eb" alt="egui">
-  <img src="https://img.shields.io/badge/platform-macOS%20%7C%20Linux%20%7C%20Windows-0f766e" alt="Platforms">
-  <img src="https://img.shields.io/badge/crypto-AES--256--GCM%20%2F%20AES--256--GCM--SIV%20%2B%20PBKDF2-7c3aed" alt="Crypto">
-  <img src="https://img.shields.io/badge/license-MIT-16a34a" alt="License">
-</p>
+Published shape: an npm/npx command backed by a Rust binary.
 
-Hashit is a small open-source desktop app for keeping secrets encrypted on your own machine.
-You remember **one master key**. Hashit uses it to encrypt or decrypt passwords, notes, and other sensitive text without sending anything to a server.
+## What it does
 
-## Why Hashit?
+Given the same:
+- input text, for example `efe.facebook`
+- master key
 
-- **Local-first** — no cloud sync, no accounts, no telemetry
-- **Simple UI** — paste text, enter your master key, encrypt or decrypt
-- **Cross-platform** — built in Rust and designed for macOS, Linux, and Windows
-- **Portable output** — encrypted text is stored as a plain string you can save anywhere
-- **Deterministic output** — the same input with the same master key always produces the same encrypted output
-- **Backward compatible** — can still decrypt existing `hashit:v1:<base64>` payloads
+Hashit produces the same encrypted output every time.
 
-## Features
+You can later decrypt that payload with the same master key.
 
-- Single-window desktop app
-- Responsive layout for narrow and wide window sizes
-- Copy input text and encrypted output to clipboard
-- Master key is not persisted to disk
-- Clean output format for easy storage and transfer
+## Why this shape?
 
-## Security model
+This repo is now intentionally a **clean CLI project**:
+- core crypto logic stays in Rust
+- npm/npx is used as the convenient entrypoint
+- the `hashit` command is easy to run globally or through `npx`
 
-Hashit is intentionally small and focused.
+## Install and run
 
-- Key derivation: **PBKDF2-HMAC-SHA256**
-- Iterations: **210,000**
-- Default encryption: **AES-256-GCM-SIV** with deterministic output
-- Legacy decryption support: **AES-256-GCM** for existing v1 payloads
-- Legacy v1 random salt: **16 bytes**
-- Legacy v1 random nonce: **12 bytes**
-- Payload formats: **`hashit:v1:<base64>`** and **`hashit:v2:<base64>`**
-
-Payload layout:
-
-- **v2 (default)**
-  - `1 byte` version
-  - `ciphertext + 16 bytes authentication tag`
-  - deterministic: same input + same master key => same output
-- **v1 (legacy)**
-  - `1 byte` version
-  - `16 bytes` salt
-  - `12 bytes` nonce
-  - `ciphertext + 16 bytes authentication tag`
-
-## Running locally
-
-### Development
+### Option 1: run from the repo
 
 ```bash
-cargo run
+npm install
+npm run cli -- encrypt "efe.facebook" -k "my-master-key"
 ```
 
-### Release build
+### Option 2: global install
 
 ```bash
+npm install -g @efekurucay/hashit
+hashit encrypt "efe.facebook" -k "my-master-key"
+```
+
+### Option 3: npx
+
+```bash
+npx @efekurucay/hashit encrypt "efe.facebook" -k "my-master-key"
+```
+
+### Option 4: local package during development
+
+```bash
+npm install -g .
+hashit encrypt "efe.facebook" -k "my-master-key"
+```
+
+## Commands
+
+### Encrypt
+
+```bash
+hashit encrypt "efe.facebook" --master-key "my-master-key"
+```
+
+Short form:
+
+```bash
+hashit encrypt "efe.facebook" -k "my-master-key"
+```
+
+### Decrypt
+
+```bash
+hashit decrypt "hashit:v2:..." --master-key "my-master-key"
+```
+
+### Environment variable
+
+You can also provide the master key with `HASHIT_MASTER_KEY`:
+
+```bash
+export HASHIT_MASTER_KEY="my-master-key"
+hashit encrypt "efe.facebook"
+```
+
+## Crypto
+
+- Key derivation: `PBKDF2-HMAC-SHA256`
+- Iterations: `210,000`
+- Default format: `hashit:v2:<base64>`
+- Default encryption: `AES-256-GCM-SIV`
+- Legacy decryption support: `AES-256-GCM` for `hashit:v1`
+
+## Development
+
+```bash
+cargo test
 cargo build --release
 ```
 
-### Packaged build
+## Packaging
 
 ```bash
 chmod +x build.sh
 ./build.sh
 ```
 
-## Platform notes
+## Notes
 
-### macOS
-
-`build.sh` produces:
-
-- `dist/Hashit.app`
-- `dist/hashit-darwin-<arch>.tar.gz`
-
-### Linux
-
-The app is intended to run on Ubuntu and other desktop Linux distributions.
-Depending on your system, you may need GUI-related development packages before building from source:
-
-```bash
-sudo apt update
-sudo apt install -y build-essential pkg-config libx11-dev libxi-dev \
-  libgl1-mesa-dev libxcursor-dev libxrandr-dev libxinerama-dev libwayland-dev libxkbcommon-dev
-```
-
-Then run:
-
-```bash
-cargo run
-```
-
-### Windows
-
-Windows packaging is planned as part of the upcoming release workflow.
-The application code is being prepared to ship the same GUI on Windows as well.
-
-## Project status
-
-Hashit is under active development.
-
-Planned next steps:
-
-- polished signed release builds for macOS, Linux, and Windows
-- GitHub Actions release workflow
-- GitHub Releases distribution
-- optional app icon and platform-specific packaging improvements
-
-## Contributing
-
-Issues, UX suggestions, and pull requests are welcome.
-
-If you open an issue, useful details include:
-
-- operating system and version
-- what action you performed
-- expected result
-- actual result
-- whether the issue is reproducible
+- The npm wrapper first tries to download a matching prebuilt binary from GitHub Releases.
+- If no prebuilt binary is available, it falls back to building with Cargo.
+- Supported prebuilt targets in this repo: Linux x64, Windows x64, macOS Apple Silicon, macOS Intel.
 
 ## License
 
